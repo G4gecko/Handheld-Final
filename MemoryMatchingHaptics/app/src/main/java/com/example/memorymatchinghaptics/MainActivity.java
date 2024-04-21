@@ -2,6 +2,10 @@ package com.example.memorymatchinghaptics;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -196,39 +200,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCardFace(ImageView tile, int card){
-        if(cardsArray[card] == 101){
-            tile.setImageResource(image101);
-        } else if(cardsArray[card] == 102){
-            tile.setImageResource(image102);
-        } else if(cardsArray[card] == 103){
-            tile.setImageResource(image103);
-        } else if(cardsArray[card] == 104){
-            tile.setImageResource(image104);
-        } else if(cardsArray[card] == 105){
-            tile.setImageResource(image105);
-        } else if(cardsArray[card] == 106){
-            tile.setImageResource(image106);
-        } else if(cardsArray[card] == 107){
-            tile.setImageResource(image107);
-        } else if(cardsArray[card] == 108){
-            tile.setImageResource(image108);
-        } else if(cardsArray[card] == 201){
-            tile.setImageResource(image201);
-        } else if(cardsArray[card] == 202){
-            tile.setImageResource(image202);
-        } else if(cardsArray[card] == 203){
-            tile.setImageResource(image203);
-        } else if(cardsArray[card] == 204){
-            tile.setImageResource(image204);
-        } else if(cardsArray[card] == 205){
-            tile.setImageResource(image205);
-        } else if(cardsArray[card] == 206){
-            tile.setImageResource(image206);
-        } else if(cardsArray[card] == 207){
-            tile.setImageResource(image207);
-        } else if(cardsArray[card] == 208){
-            tile.setImageResource(image208);
-        }
+        ObjectAnimator shrinkAnimator = ObjectAnimator.ofFloat(tile, "scaleX", 1.0f, 0.0f);
+        shrinkAnimator.setDuration(100);
+
+        ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(tile, "scaleX", 0.0f, 1.0f);
+        expandAnimator.setDuration(100);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(shrinkAnimator, expandAnimator);
+
+        shrinkAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Change the card image when fully shrunk
+                switch (cardsArray[card]) {
+                    case 101: tile.setImageResource(image101); break;
+                    case 102: tile.setImageResource(image102); break;
+                    case 103: tile.setImageResource(image103); break;
+                    case 104: tile.setImageResource(image104); break;
+                    case 105: tile.setImageResource(image105); break;
+                    case 106: tile.setImageResource(image106); break;
+                    case 107: tile.setImageResource(image107); break;
+                    case 108: tile.setImageResource(image108); break;
+                    case 201: tile.setImageResource(image201); break;
+                    case 202: tile.setImageResource(image202); break;
+                    case 203: tile.setImageResource(image203); break;
+                    case 204: tile.setImageResource(image204); break;
+                    case 205: tile.setImageResource(image205); break;
+                    case 206: tile.setImageResource(image206); break;
+                    case 207: tile.setImageResource(image207); break;
+                    case 208: tile.setImageResource(image208); break;
+                    default: tile.setImageResource(R.drawable.imageback);
+                }
+            }
+        });
+
+        animatorSet.start();
 
         //check card image and save it to a temp variable
         if(cardNumber == 1){
@@ -267,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
             Handler handler = new Handler(Looper.getMainLooper());
             //check if images are equal values
-            handler.postDelayed(this::calculate, 350);
+            handler.postDelayed(this::calculate, 450);
         }
 
         if (!timerStarted) {
@@ -276,117 +283,88 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void calculate(){
-        //if images are equal, remove them
-        if(firstCard == secondCard){
-            if(clickedFirst == 0){
-                tile11.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 1){
-                tile12.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 2){
-                tile13.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 3){
-                tile14.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 4){
-                tile21.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 5){
-                tile22.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 6){
-                tile23.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 7){
-                tile24.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 8){
-                tile31.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 9){
-                tile32.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 10){
-                tile33.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 11){
-                tile34.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 12){
-                tile41.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 13){
-                tile42.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 14){
-                tile43.setVisibility(View.INVISIBLE);
-            } else if(clickedFirst == 15){
-                tile44.setVisibility(View.INVISIBLE);
-            }
+    private void calculate() {
+        ImageView firstTile = getCardImageView(clickedFirst);
+        ImageView secondTile = getCardImageView(clickedSecond);
 
-            if(clickedSecond == 0){
-                tile11.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 1){
-                tile12.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 2){
-                tile13.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 3){
-                tile14.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 4){
-                tile21.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 5){
-                tile22.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 6){
-                tile23.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 7){
-                tile24.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 8){
-                tile31.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 9){
-                tile32.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 10){
-                tile33.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 11){
-                tile34.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 12){
-                tile41.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 13){
-                tile42.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 14){
-                tile43.setVisibility(View.INVISIBLE);
-            } else if(clickedSecond == 15){
-                tile44.setVisibility(View.INVISIBLE);
-            }
+        if (firstCard == secondCard) {
+            // If images are equal, remove them
+            if (firstTile != null) firstTile.setVisibility(View.INVISIBLE);
+            if (secondTile != null) secondTile.setVisibility(View.INVISIBLE);
         } else {
-            tile11.setImageResource(R.drawable.imageback);
-            tile12.setImageResource(R.drawable.imageback);
-            tile13.setImageResource(R.drawable.imageback);
-            tile14.setImageResource(R.drawable.imageback);
-            tile21.setImageResource(R.drawable.imageback);
-            tile22.setImageResource(R.drawable.imageback);
-            tile23.setImageResource(R.drawable.imageback);
-            tile24.setImageResource(R.drawable.imageback);
-            tile31.setImageResource(R.drawable.imageback);
-            tile32.setImageResource(R.drawable.imageback);
-            tile33.setImageResource(R.drawable.imageback);
-            tile34.setImageResource(R.drawable.imageback);
-            tile41.setImageResource(R.drawable.imageback);
-            tile42.setImageResource(R.drawable.imageback);
-            tile43.setImageResource(R.drawable.imageback);
-            tile44.setImageResource(R.drawable.imageback);
+            // If images are not equal, flip only these two tiles back to the default image
+            if (firstTile != null) flipCardBack(firstTile);
+            if (secondTile != null) flipCardBack(secondTile);
 
             vibratePattern(wrongPattern);
-            mistakes++;
+	    mistakes++;
         }
 
-        tile11.setEnabled(true);
-        tile12.setEnabled(true);
-        tile13.setEnabled(true);
-        tile14.setEnabled(true);
-        tile21.setEnabled(true);
-        tile22.setEnabled(true);
-        tile23.setEnabled(true);
-        tile24.setEnabled(true);
-        tile31.setEnabled(true);
-        tile32.setEnabled(true);
-        tile33.setEnabled(true);
-        tile34.setEnabled(true);
-        tile41.setEnabled(true);
-        tile42.setEnabled(true);
-        tile43.setEnabled(true);
-        tile44.setEnabled(true);
+        enableAllTiles(true);
 
-        //check if game is over
+        // Check if the game is over
         checkEnd();
+    }
+
+    private void flipCardBack(ImageView tile) {
+        ObjectAnimator shrinkAnimator = ObjectAnimator.ofFloat(tile, "scaleX", 1.0f, 0.0f);
+        shrinkAnimator.setDuration(100);
+
+        ObjectAnimator expandAnimator = ObjectAnimator.ofFloat(tile, "scaleX", 0.0f, 1.0f);
+        expandAnimator.setDuration(100);
+
+        shrinkAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Change the card image back to default when fully shrunk
+                tile.setImageResource(R.drawable.imageback);
+            }
+        });
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(shrinkAnimator, expandAnimator);
+        animatorSet.start();
+    }
+
+    private ImageView getCardImageView(int index) {
+        switch (index) {
+            case 0: return tile11;
+            case 1: return tile12;
+            case 2: return tile13;
+            case 3: return tile14;
+            case 4: return tile21;
+            case 5: return tile22;
+            case 6: return tile23;
+            case 7: return tile24;
+            case 8: return tile31;
+            case 9: return tile32;
+            case 10: return tile33;
+            case 11: return tile34;
+            case 12: return tile41;
+            case 13: return tile42;
+            case 14: return tile43;
+            case 15: return tile44;
+            default: return null;
+        }
+    }
+
+    private void enableAllTiles(boolean isEnabled) {
+        tile11.setEnabled(isEnabled);
+        tile12.setEnabled(isEnabled);
+        tile13.setEnabled(isEnabled);
+        tile14.setEnabled(isEnabled);
+        tile21.setEnabled(isEnabled);
+        tile22.setEnabled(isEnabled);
+        tile23.setEnabled(isEnabled);
+        tile24.setEnabled(isEnabled);
+        tile31.setEnabled(isEnabled);
+        tile32.setEnabled(isEnabled);
+        tile33.setEnabled(isEnabled);
+        tile34.setEnabled(isEnabled);
+        tile41.setEnabled(isEnabled);
+        tile42.setEnabled(isEnabled);
+        tile43.setEnabled(isEnabled);
+        tile44.setEnabled(isEnabled);
     }
 
     private void checkEnd(){
