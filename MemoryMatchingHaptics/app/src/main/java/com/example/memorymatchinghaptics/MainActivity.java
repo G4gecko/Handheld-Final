@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         Button exitButton = findViewById(R.id.exitbtn);
         startButton.setOnClickListener(v -> {
             switchToGameActivity();
-            finish();
         });
         exitButton.setOnClickListener(v -> {
             finish();

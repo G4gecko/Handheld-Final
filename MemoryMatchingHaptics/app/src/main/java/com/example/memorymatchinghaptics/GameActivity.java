@@ -462,7 +462,6 @@ public class GameActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Menu", (dialog, i) -> {
             Intent intent = new Intent(GameActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
